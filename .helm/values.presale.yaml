@@ -1,0 +1,25 @@
+image_preprocess:
+  image:
+    path: "/deps-presale-x01/deps-image-preprocess"
+    pullPolicy: Always
+  resources: {}
+
+image_preprocess_consumer:
+  image:
+    path: "/deps-presale-x01/deps-image-preprocess"
+    pullPolicy: Always
+  resources: {}
+
+image_preprocess_settings:
+  DEFAULT_PREPROCESSORS: '["rotation", "orientation"]'
+
+helm:
+  helm_logs_job_enabled: false
+
+csi:
+  vault_namespace: 'k8s-presale'
+  roleName: 'k8s-presale'
+  vaultKubernetesMountPath: 'kubernetes-presale'
+
+service_account:
+  serviceAccountName: 'deps-presale'

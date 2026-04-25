@@ -1,0 +1,55 @@
+version: "3.4"
+
+services:
+  image-preprocess:
+    build:
+      context: .
+      dockerfile: ./etc/deps-image-preprocess/Dockerfile
+      target: develop
+      args:
+        REPOSITORY_URL: "${REPOSITORY_URL}"
+      cache_from:
+          - "image-preprocess-dev:latest"
+    env_file:
+      - ./etc/deps-image-preprocess/env/.dev.env
+      - .env
+    ports:
+      - '8778:8000'
+    volumes:
+      - ./src/deps_image_preprocess:/app/deps_image_preprocess
+      - ./src/tests:/app/tests
+      - ./src/poetry.lock:/app/poetry.lock
+      - ./src/pyproject.toml:/app/pyproject.toml
+      - ./vendors:/vendors
+      - ./src/setup.cfg:/app/setup.cfg
+      - ./src/requirements.txt:/app/requirements.txt
+    networks:
+      - deps-network
+
+  image-preprocess-consumer:
+    build:
+      context: .
+      dockerfile: ./etc/deps-image-preprocess/Dockerfile
+      target: develop
+      args:
+        REPOSITORY_URL: "${REPOSITORY_URL}"
+      cache_from:
+        - "image-preprocess-dev:latest"
+    env_file:
+      - ./etc/deps-image-preprocess/env/.dev.env
+      - .env
+    volumes:
+      - ./src/deps_image_preprocess:/app/deps_image_preprocess
+      - ./src/tests:/app/tests
+      - ./src/poetry.lock:/app/poetry.lock
+      - ./src/pyproject.toml:/app/pyproject.toml
+      - ./vendors:/vendors
+      - ./src/setup.cfg:/app/setup.cfg
+      - ./src/requirements.txt:/app/requirements.txt
+    networks:
+      - deps-network
+
+networks:
+  deps-network:
+      name: deps-network
+      external: true

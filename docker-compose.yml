@@ -1,0 +1,11 @@
+version: "3.4"
+
+services:
+  image-preprocess:
+    image: "image-preprocess-dev"
+    container_name: "deps-image-preprocess"
+
+  image-preprocess-consumer:
+    image: "image-preprocess-dev"
+    container_name: "deps-image-preprocess-consumer"
+    command: python -m deps_image_preprocess dispatch

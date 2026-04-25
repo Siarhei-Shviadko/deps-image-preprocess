@@ -1,0 +1,31 @@
+version: "3.4"
+
+services:
+  image-preprocess:
+    env_file: ./etc/deps-image-preprocess/env/.test.env
+    volumes:
+      - test-cache:/tmp/test_cache
+      - ./src/deps_image_preprocess:/app/deps_image_preprocess
+      - ./src/tests:/app/tests
+      - ./src/poetry.lock:/app/poetry.lock
+      - ./src/pyproject.toml:/app/pyproject.toml
+      - ./vendors:/vendors
+      - ./src/setup.cfg:/app/setup.cfg
+
+  test-rabbitmq:
+    image: "${REPOSITORY_URL}/base/rabbitmq:3.7.8-management-alpine"
+    environment:
+      - RABBITMQ_HOST=test-rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_DEFAULT_VHOST=test_deps
+      - RABBITMQ_DEFAULT_USER=deps-rabbitmq
+      - RABBITMQ_DEFAULT_PASS=deps-rabbitmq-password
+      - RABBITMQ_VHOST=test_deps
+      - RABBITMQ_USER=deps-rabbitmq
+      - RABBITMQ_PASS=deps-rabbitmq-password
+    volumes:
+      - test-rabbitmq:/var/lib/rabbitmq
+
+volumes:
+  test-cache:
+  test-rabbitmq:
