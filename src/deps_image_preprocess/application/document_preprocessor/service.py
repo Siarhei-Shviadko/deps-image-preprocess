@@ -6,7 +6,10 @@ from uuid import uuid4
 from deps_message_flow.events.publisher import DomainEventPublisher
 
 from deps_image_preprocess.constants import DOCUMENTS_AGGREGATE
-from deps_image_preprocess.domain.constants import ImagePreprocessorEnum
+from deps_image_preprocess.domain.constants import (
+    ImageExtensionEnum,
+    ImagePreprocessorEnum,
+)
 from deps_image_preprocess.domain.entities import (
     PreprocessedImage,
     PreprocessingImage,
@@ -74,7 +77,7 @@ class DocumentPreprocessorService:
     def _upload_image(self, paranet_blob_name: str, image: PreprocessingImage) -> str:
         parent_path = path.dirname(paranet_blob_name)
         return self._file_storage.upload_content(
-            path.join(parent_path, f"{uuid4().hex}.{image.extension}"),
+            path.join(parent_path, f"{uuid4().hex}.{ImageExtensionEnum(image.extension).value}"),
             image.image_content,
             generate_unique_filename=False,
         )
