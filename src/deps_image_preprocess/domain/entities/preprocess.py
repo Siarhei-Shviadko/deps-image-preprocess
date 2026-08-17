@@ -49,7 +49,7 @@ class PreprocessingImage:
 
     @property
     def image_content(self) -> bytes:
-        cv_extension = f".{self.extension or ImageExtensionEnum.PNG}"
+        cv_extension = f".{ImageExtensionEnum(self.extension or ImageExtensionEnum.PNG).value}"
         encode_params = self.cv_encode_params_mapping[cv_extension[1:]]
         return bytes(cv2.imencode(cv_extension, self.pixels, encode_params)[1])
 
@@ -72,7 +72,7 @@ class PreprocessingImage:
         ext = what(None, image_content)
         if ext not in list(ImageExtensionEnum):
             raise PreprocessingImageError(f"Got unsupported image extension: {ext}")
-        return ext  # type: ignore
+        return ImageExtensionEnum(ext)
 
 
 @dataclass

@@ -111,7 +111,7 @@ class ReferencePageService:
                 preprocessors=self._get_preprocessors_to_apply(image),
             )
             uploaded_path = self._file_storage.upload_content(
-                path.join(path_to_save, f"{uuid4().hex}.{preprocessed_image.extension}"),
+                path.join(path_to_save, f"{uuid4().hex}.{ImageExtensionEnum(preprocessed_image.extension).value}"),
                 preprocessed_image.image_content,
                 generate_unique_filename=False,
             )
